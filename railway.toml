@@ -6,8 +6,8 @@ startCommand = "chmod +x start.sh && ./start.sh"
 
 [variables]
 APP_ENV = "production"
-APP_DEBUG = "false"
+APP_DEBUG = "true"
 SESSION_DRIVER = "database"
 CACHE_DRIVER = "database"
 QUEUE_CONNECTION = "database"
-RUN_MIGRATIONS = "false"
+RUN_MIGRATIONS = "true"
