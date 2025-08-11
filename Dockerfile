@@ -48,13 +48,10 @@ RUN chmod -R 755 /var/www/bootstrap/cache
 RUN echo '#!/bin/sh' > /var/www/docker-start.sh && \
     echo 'echo "🚀 Iniciando aplicação Laravel..."' >> /var/www/docker-start.sh && \
     echo '' >> /var/www/docker-start.sh && \
-    echo '# Aguardar MySQL estar disponível' >> /var/www/docker-start.sh && \
-    echo 'echo "⏳ Aguardando MySQL..."' >> /var/www/docker-start.sh && \
-    echo 'until mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USERNAME" -p"$DB_PASSWORD" -e "SELECT 1" >/dev/null 2>&1; do' >> /var/www/docker-start.sh && \
-    echo '  echo "MySQL não está pronto ainda..."' >> /var/www/docker-start.sh && \
-    echo '  sleep 2' >> /var/www/docker-start.sh && \
-    echo 'done' >> /var/www/docker-start.sh && \
-    echo 'echo "✅ MySQL conectado!"' >> /var/www/docker-start.sh && \
+    echo '# Aguardar um pouco para o MySQL estar disponível' >> /var/www/docker-start.sh && \
+    echo 'echo "⏳ Aguardando MySQL inicializar..."' >> /var/www/docker-start.sh && \
+    echo 'sleep 10' >> /var/www/docker-start.sh && \
+    echo 'echo "✅ Prosseguindo com a inicialização..."' >> /var/www/docker-start.sh && \
     echo '' >> /var/www/docker-start.sh && \
     echo '# Configurar variáveis de ambiente' >> /var/www/docker-start.sh && \
     echo 'export DB_CONNECTION=mysql' >> /var/www/docker-start.sh && \
