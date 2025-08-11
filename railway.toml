@@ -2,7 +2,7 @@
 builder = "nixpacks"
 
 [deploy]
-startCommand = "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$PORT"
+startCommand = "chmod +x start.sh && ./start.sh"
 
 [variables]
 APP_ENV = "production"
@@ -10,3 +10,4 @@ APP_DEBUG = "false"
 SESSION_DRIVER = "database"
 CACHE_DRIVER = "database"
 QUEUE_CONNECTION = "database"
+RUN_MIGRATIONS = "false"

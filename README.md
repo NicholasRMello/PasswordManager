@@ -220,69 +220,6 @@ sudo chmod -R 775 storage bootstrap/cache
 
 **Sem o Vite rodando ou assets compilados, o CSS e JavaScript não funcionarão corretamente.**
 
-## 🚀 Deploy no Railway
-
-### Pré-requisitos para Deploy
-1. Conta no [Railway](https://railway.app)
-2. Repositório Git (GitHub, GitLab, etc.)
-3. Código commitado e enviado para o repositório
-
-### Passos para Deploy
-
-1. **Conecte seu repositório ao Railway:**
-   - Acesse [Railway](https://railway.app)
-   - Clique em "New Project"
-   - Selecione "Deploy from GitHub repo"
-   - Escolha este repositório
-
-2. **Configure as variáveis de ambiente:**
-   ```env
-   APP_NAME="Password Manager"
-   APP_ENV=production
-   APP_KEY=base64:sua_chave_aqui
-   APP_DEBUG=false
-   APP_URL=https://seu-app.up.railway.app
-   
-   DB_CONNECTION=mysql
-   DB_HOST=${{MYSQL_HOST}}
-   DB_PORT=${{MYSQL_PORT}}
-   DB_DATABASE=${{MYSQL_DATABASE}}
-   DB_USERNAME=${{MYSQL_USER}}
-   DB_PASSWORD=${{MYSQL_PASSWORD}}
-   
-   SESSION_DRIVER=database
-   CACHE_DRIVER=database
-   ```
-
-3. **Adicione o banco MySQL:**
-   - No painel do Railway, clique em "+ New"
-   - Selecione "Database" → "Add MySQL"
-   - As variáveis de ambiente serão criadas automaticamente
-
-4. **Configure o build (criar arquivo `railway.toml`):**
-   ```toml
-   [build]
-   builder = "nixpacks"
-   
-   [deploy]
-   startCommand = "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$PORT"
-   ```
-
-5. **Comandos pós-deploy:**
-   ```bash
-   php artisan key:generate --force
-   php artisan migrate --force
-   php artisan config:cache
-   php artisan route:cache
-   php artisan view:cache
-   ```
-
-### Configurações Importantes
-
-- **Domínio personalizado:** Configure em Settings → Domains
-- **Variáveis de ambiente:** Adicione todas as variáveis necessárias
-- **SSL:** Habilitado automaticamente pelo Railway
-
 ## 📝 Notas para Recrutadores
 
 ### 🎯 Acesso Rápido
