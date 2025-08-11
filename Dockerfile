@@ -10,7 +10,15 @@ RUN apk add --no-cache \
     unzip \
     nodejs \
     npm \
-    mysql-client
+    mysql-client \
+    oniguruma-dev \
+    freetype-dev \
+    libjpeg-turbo-dev \
+    libwebp-dev \
+    libxpm-dev
+
+# Configurar extensão GD
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp --with-xpm
 
 # Instalar extensões PHP
 RUN docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd
