@@ -37,12 +37,19 @@ RUN composer install --optimize-autoloader --no-dev
 
 # Instalar dependências Node.js
 RUN npm install
+
+# Build dos assets para produção
 RUN npm run build
+
+# Verificar se os assets foram gerados
+RUN ls -la public/build/ || echo "Build directory not found"
 
 # Configurar permissões
 RUN chown -R www-data:www-data /var/www
 RUN chmod -R 755 /var/www/storage
 RUN chmod -R 755 /var/www/bootstrap/cache
+RUN chmod -R 755 /var/www/public
+RUN mkdir -p /var/www/public/build && chmod -R 755 /var/www/public/build
 
 # Script de inicialização personalizado
 RUN echo '#!/bin/sh' > /var/www/docker-start.sh && \
@@ -57,7 +64,9 @@ RUN echo '#!/bin/sh' > /var/www/docker-start.sh && \
     echo 'export DB_CONNECTION=mysql' >> /var/www/docker-start.sh && \
     echo '# Variáveis já definidas pelo Railway' >> /var/www/docker-start.sh && \
     echo 'export LOG_CHANNEL=stderr' >> /var/www/docker-start.sh && \
-    echo 'export APP_DEBUG=true' >> /var/www/docker-start.sh && \
+    echo 'export APP_ENV=production' >> /var/www/docker-start.sh && \
+    echo 'export APP_DEBUG=false' >> /var/www/docker-start.sh && \
+    echo 'export ASSET_URL=' >> /var/www/docker-start.sh && \
     echo '' >> /var/www/docker-start.sh && \
     echo '# Debug das variáveis' >> /var/www/docker-start.sh && \
     echo 'echo "🔍 Variáveis de ambiente:"' >> /var/www/docker-start.sh && \
