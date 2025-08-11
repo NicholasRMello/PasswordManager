@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Fix zoom and scale issues */
+html {
+    zoom: 1 !important;
+    -webkit-text-size-adjust: 100% !important;
+    -ms-text-size-adjust: 100% !important;
+    text-size-adjust: 100% !important;
+}
+
+body {
+    zoom: 1 !important;
+    transform: scale(1) !important;
+    transform-origin: 0 0 !important;
+    -webkit-transform: scale(1) !important;
+    -webkit-transform-origin: 0 0 !important;
+}
+
+/* Prevent zoom on mobile devices */
+@media screen and (max-width: 768px) {
+    html, body {
+        zoom: 1 !important;
+        -webkit-text-size-adjust: none !important;
+        -ms-text-size-adjust: none !important;
+        text-size-adjust: none !important;
+    }
+}
