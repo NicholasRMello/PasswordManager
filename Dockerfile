@@ -50,7 +50,7 @@ RUN echo '#!/bin/sh' > /var/www/docker-start.sh && \
     echo '' >> /var/www/docker-start.sh && \
     echo '# Aguardar MySQL estar disponível' >> /var/www/docker-start.sh && \
     echo 'echo "⏳ Aguardando MySQL..."' >> /var/www/docker-start.sh && \
-    echo 'until mysql -h"$MYSQL_HOST" -P"$MYSQL_PORT" -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" -e "SELECT 1" >/dev/null 2>&1; do' >> /var/www/docker-start.sh && \
+    echo 'until mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USERNAME" -p"$DB_PASSWORD" -e "SELECT 1" >/dev/null 2>&1; do' >> /var/www/docker-start.sh && \
     echo '  echo "MySQL não está pronto ainda..."' >> /var/www/docker-start.sh && \
     echo '  sleep 2' >> /var/www/docker-start.sh && \
     echo 'done' >> /var/www/docker-start.sh && \
@@ -58,11 +58,7 @@ RUN echo '#!/bin/sh' > /var/www/docker-start.sh && \
     echo '' >> /var/www/docker-start.sh && \
     echo '# Configurar variáveis de ambiente' >> /var/www/docker-start.sh && \
     echo 'export DB_CONNECTION=mysql' >> /var/www/docker-start.sh && \
-    echo 'export DB_HOST="$MYSQL_HOST"' >> /var/www/docker-start.sh && \
-    echo 'export DB_PORT="$MYSQL_PORT"' >> /var/www/docker-start.sh && \
-    echo 'export DB_DATABASE="$MYSQL_DATABASE"' >> /var/www/docker-start.sh && \
-    echo 'export DB_USERNAME="$MYSQL_USER"' >> /var/www/docker-start.sh && \
-    echo 'export DB_PASSWORD="$MYSQL_PASSWORD"' >> /var/www/docker-start.sh && \
+    echo '# Variáveis já definidas pelo Railway' >> /var/www/docker-start.sh && \
     echo 'export LOG_CHANNEL=stderr' >> /var/www/docker-start.sh && \
     echo 'export APP_DEBUG=true' >> /var/www/docker-start.sh && \
     echo '' >> /var/www/docker-start.sh && \
