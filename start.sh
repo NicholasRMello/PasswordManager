@@ -5,6 +5,19 @@
 
 echo "🚀 Iniciando aplicação Laravel no Railway..."
 
+# Configurar variáveis de ambiente se não estiverem definidas
+if [ -z "$DB_CONNECTION" ]; then
+    export DB_CONNECTION="mysql"
+fi
+
+if [ -z "$LOG_CHANNEL" ]; then
+    export LOG_CHANNEL="stderr"
+fi
+
+if [ -z "$APP_DEBUG" ]; then
+    export APP_DEBUG="true"
+fi
+
 # Debug: Mostrar variáveis importantes
 echo "📋 Variáveis de ambiente:"
 echo "APP_ENV: $APP_ENV"
@@ -12,6 +25,8 @@ echo "APP_DEBUG: $APP_DEBUG"
 echo "DB_CONNECTION: $DB_CONNECTION"
 echo "LOG_CHANNEL: $LOG_CHANNEL"
 echo "PORT: $PORT"
+echo "DB_HOST: $DB_HOST"
+echo "DB_DATABASE: $DB_DATABASE"
 
 # Verificar se as variáveis de ambiente estão configuradas
 if [ -z "$APP_KEY" ]; then
