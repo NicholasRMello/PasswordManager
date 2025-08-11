@@ -38,6 +38,10 @@ RUN composer install --optimize-autoloader --no-dev
 # Instalar dependências Node.js
 RUN npm install
 
+# Definir variáveis de ambiente para o build
+ENV NODE_ENV=production
+ENV VITE_APP_NAME="Password Manager"
+
 # Build dos assets para produção
 RUN npm run build
 

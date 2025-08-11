@@ -12,10 +12,21 @@ export default defineConfig({
         }),
     ],
     build: {
+        outDir: 'public/build',
+        emptyOutDir: true,
+        manifest: true,
         rollupOptions: {
             output: {
                 manualChunks: undefined,
             },
         },
+        assetsDir: 'assets',
     },
+    server: {
+        hmr: {
+            host: 'localhost',
+        },
+    },
+    // Configuração específica para produção
+    base: process.env.NODE_ENV === 'production' ? '/build/' : '/',
 });
