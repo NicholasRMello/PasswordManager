@@ -5,6 +5,12 @@
 
 echo "🚀 Iniciando aplicação Laravel no Railway..."
 
+# Copiar arquivo .env.production para .env
+if [ -f ".env.production" ]; then
+    echo "📄 Copiando .env.production para .env..."
+    cp .env.production .env
+fi
+
 # Configurar variáveis de ambiente se não estiverem definidas
 if [ -z "$DB_CONNECTION" ]; then
     export DB_CONNECTION="mysql"
