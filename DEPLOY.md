@@ -13,7 +13,7 @@ APP_ENV=production
 APP_DEBUG=false
 APP_URL=https://seu-dominio.up.railway.app
 ASSET_URL=https://seu-dominio.up.railway.app
-APP_KEY=base64:SUA_CHAVE_AQUI
+APP_KEY=base64:+dtmA4HSsPJ1wsBGGVprNogYqyGw8qX+bavBtjzOgWA=
 
 # Banco de dados (Railway MySQL)
 DB_CONNECTION=mysql
@@ -67,6 +67,11 @@ RUN_MIGRATIONS=true
 
 ### 4. Troubleshooting
 
+**Erro 500 (CRÍTICO - RESOLVIDO):**
+- ✅ **APP_KEY atualizada:** A chave da aplicação foi gerada e configurada
+- ✅ **Configurações de produção:** APP_DEBUG=false definido
+- ⚠️ **Próximo passo:** Fazer deploy com as novas configurações
+
 **Assets não carregam:**
 - Verificar se `APP_URL` e `ASSET_URL` estão corretos
 - Confirmar se o build foi executado corretamente
@@ -76,7 +81,7 @@ RUN_MIGRATIONS=true
 - Verificar variáveis de ambiente do MySQL
 - Confirmar se o serviço MySQL está ativo no Railway
 
-**Erro 500:**
-- Verificar se `APP_KEY` está definida
-- Confirmar se `APP_DEBUG=false` em produção
-- Verificar logs de erro
+**Outros erros 500:**
+- Verificar se todas as variáveis de ambiente estão definidas
+- Confirmar se as migrações foram executadas
+- Verificar logs de erro no Railway
