@@ -15,6 +15,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Healthcheck para Railway
+Route::get('/health', function () {
+    return response()->json([
+        'status' => 'ok',
+        'timestamp' => now(),
+        'app' => config('app.name')
+    ]);
+});
+
 Route::get('/', function () {
     return redirect()->route('dashboard');
 });

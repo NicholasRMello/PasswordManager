@@ -121,7 +121,8 @@ RUN_MIGRATIONS=true
 
 3. **Configuração do Railway**:
    - Timeout aumentado para 300 segundos no `railway.json`
-   - Healthcheck configurado para path `/`
+   - Healthcheck configurado para path `/health` (endpoint específico)
+   - Criado endpoint `/health` que retorna JSON sem autenticação
 
 **Por que php:8.2-cli-alpine?**
 - A imagem `fpm-alpine` é para uso com nginx/apache
