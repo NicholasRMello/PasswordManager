@@ -106,13 +106,27 @@ RUN_MIGRATIONS=true
 
 **Problema: "Service Unavailable" no Healthcheck**
 
-**Causa**: O Railway não consegue conectar na porta correta para fazer o healthcheck.
+**Causa Principal**: Incompatibilidade entre a imagem Docker e o comando de inicialização.
 
 **Soluções aplicadas**:
-1. **Simplificação do docker-start.sh**: Removido o teste complexo de conexão MySQL que usava `mysqladmin`
-2. **Uso das variáveis corretas**: O Railway fornece automaticamente as variáveis de banco (`DB_HOST`, `DB_PORT`, etc.)
-3. **Timeout aumentado**: Healthcheck timeout aumentado para 300 segundos no `railway.json`
-4. **Aguardo simples**: Substituído o loop de teste MySQL por um `sleep 10` simples
+1. **Correção do Dockerfile**: 
+   - Alterado de `php:8.2-fpm-alpine` para `php:8.2-cli-alpine`
+   - Removido script duplicado que estava sendo criado no build
+   - Removida linha `EXPOSE 8000` (Railway gerencia automaticamente)
+
+2. **Simplificação do docker-start.sh**: 
+   - Removido o teste complexo de conexão MySQL que usava `mysqladmin`
+   - Uso das variáveis corretas fornecidas pelo Railway
+   - Substituído o loop de teste MySQL por um `sleep 10` simples
+
+3. **Configuração do Railway**:
+   - Timeout aumentado para 300 segundos no `railway.json`
+   - Healthcheck configurado para path `/`
+
+**Por que php:8.2-cli-alpine?**
+- A imagem `fpm-alpine` é para uso com nginx/apache
+- A imagem `cli-alpine` é compatível com `php artisan serve`
+- O Railway espera que a aplicação responda diretamente na porta $PORT
 
 **Verificação**:
 Após o deploy, verifique:
