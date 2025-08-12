@@ -16,3 +16,11 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+
+# Arquivos do Windows
+desktop.ini
+Thumbs.db
+
+# Arquivos temporários
+*.tmp
+*.temp
