@@ -40,22 +40,14 @@ RUN npm install
 ENV NODE_ENV=production
 RUN npm run build
 
-# Debug: verificar estrutura criada
-RUN echo "=== Verificando estrutura do build ===" \
-    && ls -la public/build/ \
-    && echo "=== Conteúdo da pasta .vite ===" \
-    && ls -la public/build/.vite/ || echo "Pasta .vite não existe" \
-    && echo "=== Procurando por manifest.json ===" \
-    && find public/build/ -name "manifest.json" -type f || echo "Nenhum manifest.json encontrado"
-
 # Se o manifest estiver em .vite/, mover para o local correto
 RUN if [ -f "public/build/.vite/manifest.json" ]; then \
         echo "Movendo manifest para local correto"; \
         cp public/build/.vite/manifest.json public/build/manifest.json; \
     fi
 
-# Verificar se manifest está no local correto agora
-RUN test -f public/build/manifest.json && echo "✅ Manifest OK" || (echo "❌ Manifest ainda não encontrado" && exit 1)
+# Verificar se manifest está no local correto
+RUN test -f public/build/manifest.json && echo "✅ Manifest OK" || (echo "❌ Manifest não encontrado" && exit 1)
 
 # Permissões
 RUN chown -R www-data:www-data /var/www \
@@ -63,5 +55,11 @@ RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/bootstrap/cache \
     && chmod -R 755 /var/www/public
 
-EXPOSE 8000
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+# Usar a porta do ambiente (Render usa $PORT)
+EXPOSE $PORT
+
+# Script de inicialização
+CMD php artisan config:cache && \
+    php artisan route:cache && \
+    php artisan view:cache && \
+    php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
