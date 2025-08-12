@@ -10,7 +10,7 @@ RUN apk add --no-cache \
     unzip \
     nodejs \
     npm \
-    mysql-client \
+    postgresql-client \
     oniguruma-dev \
     freetype-dev \
     libjpeg-turbo-dev \
@@ -21,7 +21,7 @@ RUN apk add --no-cache \
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp --with-xpm
 
 # Instalar extensões PHP
-RUN docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd
+RUN docker-php-ext-install pdo pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd
 
 # Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -58,5 +58,8 @@ RUN mkdir -p /var/www/public/build && chmod -R 755 /var/www/public/build
 # Tornar o script de inicialização executável
 RUN chmod +x /var/www/docker-start.sh
 
+# Expor porta
+EXPOSE 8000
+
 # Comando de inicialização
-CMD ["/var/www/docker-start.sh"]
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]

@@ -1,7 +1,11 @@
 services:
   - type: web
     name: password-manager
-    env: php
+    env: docker
+    repo: https://github.com/NicholasRMello/PasswordManager
+    branch: main
+    region: virginia
+    plan: free
     buildCommand: |
       composer install --no-dev --optimize-autoloader
       npm install
@@ -10,42 +14,19 @@ services:
       php artisan route:cache
       php artisan view:cache
     startCommand: php artisan serve --host=0.0.0.0 --port=$PORT
-    healthCheckPath: /health
     envVars:
       - key: APP_NAME
-        value: "Password Manager"
+        value: Password Manager
       - key: APP_ENV
         value: production
       - key: APP_DEBUG
         value: false
-      - key: APP_URL
-        sync: false
       - key: APP_KEY
         generateValue: true
       - key: LOG_CHANNEL
         value: errorlog
       - key: DB_CONNECTION
         value: pgsql
-      - key: DB_HOST
-        fromDatabase:
-          name: password-manager-db
-          property: host
-      - key: DB_PORT
-        fromDatabase:
-          name: password-manager-db
-          property: port
-      - key: DB_DATABASE
-        fromDatabase:
-          name: password-manager-db
-          property: database
-      - key: DB_USERNAME
-        fromDatabase:
-          name: password-manager-db
-          property: user
-      - key: DB_PASSWORD
-        fromDatabase:
-          name: password-manager-db
-          property: password
       - key: BROADCAST_DRIVER
         value: log
       - key: CACHE_DRIVER
@@ -63,3 +44,5 @@ databases:
   - name: password-manager-db
     databaseName: password_manager
     user: password_manager_user
+    plan: free
+    region: virginia

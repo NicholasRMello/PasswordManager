@@ -60,10 +60,10 @@ git push
 3. Conecte seu repositório `PasswordManager`
 4. Configure:
    - **Name**: `password-manager`
-   - **Environment**: `PHP`
-   - **Build Command**: `./build.render.sh`
-   - **Start Command**: `./start.render.sh`
-   - **Plan**: **Free** 🎉
+   - **Language**: `Docker`
+   - **Branch**: `main`
+   - **Root Directory**: deixe vazio (ou `src` se necessário)
+   - **Instance Type**: **Free** (512 MB RAM, 0.1 CPU) 🎉
 
 ### 4. Criar Banco PostgreSQL
 1. Clique **"New +"** → **"PostgreSQL"**
@@ -75,14 +75,15 @@ git push
 
 ### 5. Conectar Banco ao Web Service
 1. No web service, vá em **"Environment"**
-2. Adicione as variáveis:
+2. O Render conectará automaticamente se usar `render.yaml`
+3. Ou adicione manualmente:
    ```
    DB_CONNECTION=pgsql
-   DB_HOST=[Internal Database URL]
+   DB_HOST=[Internal Database URL do seu banco]
    DB_PORT=5432
    DB_DATABASE=password_manager
    DB_USERNAME=password_manager_user
-   DB_PASSWORD=[Auto-generated]
+   DB_PASSWORD=[Senha gerada automaticamente]
    ```
 
 ### 6. Configurar Variáveis Adicionais
