@@ -25,11 +25,12 @@ fi
 echo "📊 Executando migrações..."
 php artisan migrate --force
 
-# Build dos assets para produção (USANDO NPX)
+# Build dos assets para produção (FORÇANDO INSTALAÇÃO COMPLETA)
 echo "🎨 Compilando assets para produção..."
-npm install  # Usar npm install em vez de npm ci
-echo "🔧 Executando build do Vite com npx..."
-npx vite build  # Usar npx diretamente
+echo "📦 Instalando TODAS as dependências (incluindo devDependencies)..."
+npm install --include=dev  # Força instalação de devDependencies
+echo "🔧 Executando build do Vite..."
+npm run build  # Volta para npm run build normal
 
 # Verificar se o manifest foi gerado
 if [ ! -f "public/build/manifest.json" ]; then
