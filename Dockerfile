@@ -56,11 +56,12 @@ RUN chmod -R 755 /var/www/bootstrap/cache
 RUN chmod -R 755 /var/www/public
 RUN mkdir -p /var/www/public/build && chmod -R 755 /var/www/public/build
 
-# Tornar o script de inicialização executável
+# Tornar os scripts de inicialização executáveis
 RUN chmod +x /var/www/docker-start.sh
+RUN chmod +x /var/www/start.render.sh
 
 # Expor porta
 EXPOSE 8000
 
-# Comando de inicialização
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+# Comando de inicialização para Render
+CMD ["/var/www/start.render.sh"]
