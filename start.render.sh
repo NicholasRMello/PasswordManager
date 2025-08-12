@@ -25,6 +25,10 @@ fi
 echo "📊 Executando migrações..."
 php artisan migrate --force
 
+# Build dos assets para produção
+echo "🎨 Compilando assets para produção..."
+npm run build
+
 # Verificar aplicação
 echo "🔧 Verificando aplicação..."
 php artisan --version
