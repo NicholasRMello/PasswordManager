@@ -1,24 +1,39 @@
 # Password Manager - Gerenciador de Senhas
 
-Um sistema web seguro para gerenciamento de credenciais desenvolvido em Laravel com autenticação, criptografia e gerador de senhas.
+Sistema web seguro para gerenciamento de credenciais desenvolvido em Laravel com autenticação, criptografia e gerador de senhas.
 
-## 🌐 Demonstração Online
+## Demonstração Online
 
-**🚀 [Acesse a aplicação em produção](https://passwordmanager-production.up.railway.app)**
+  Acesso teste:
+  - Login: teste@teste.com.br
+  - Senha: 12345678
+    obs: Pode criar qualquer acesso fictício :)
+**[Acesse a aplicação em produção](https://passwordmanager-t0lw.onrender.com)**
 
-*Aplicação hospedada no Railway para demonstração aos recrutadores*
+*Aplicação hospedada no Render para demonstração* (Leve instabilidade)
 
-## 🚀 Funcionalidades
+## 📱 Screenshots
 
-- ✅ Sistema de autenticação completo (login/registro)
-- ✅ Gerenciamento seguro de credenciais
-- ✅ Gerador de senhas seguras com configurações personalizáveis
-- ✅ Criptografia de senhas no banco de dados
-- ✅ Interface moderna e responsiva com Tailwind CSS
-- ✅ Validação de formulários
-- ✅ Proteção CSRF
+### Tela de Login
+![Login](./screenshots/login.png)
 
-## 🛠️ Tecnologias Utilizadas
+### Dashboard Principal
+![Dashboard](./screenshots/dashboard.png)
+
+### Criar Nova Credencial
+![Nova Credencial](./screenshots/nova-credencial.png)
+
+## Funcionalidades
+
+- Sistema de autenticação completo (login/registro)
+- Gerenciamento seguro de credenciais
+- Gerador de senhas seguras com configurações personalizáveis
+- Criptografia de senhas no banco de dados
+- Interface moderna e responsiva com Tailwind CSS
+- Validação de formulários
+- Proteção CSRF
+
+## Tecnologias Utilizadas
 
 - **Backend:** Laravel 10.x
 - **Frontend:** Blade Templates, Tailwind CSS, Vite
@@ -26,18 +41,18 @@ Um sistema web seguro para gerenciamento de credenciais desenvolvido em Laravel 
 - **Autenticação:** Laravel Breeze
 - **Criptografia:** Laravel Encryption
 
-## 📋 Pré-requisitos
+## Pré-requisitos
 
 Antes de executar o projeto, certifique-se de ter instalado:
 
 - PHP >= 8.1
 - Composer
 - Node.js >= 16.x
-- NPM ou Yarn
+- NPM
 - MySQL >= 5.7
 - Git
 
-## 🔧 Instalação e Configuração
+## Instalação e Configuração
 
 ### 1. Clone o repositório
 ```bash
@@ -102,7 +117,7 @@ php artisan serve
 
 O projeto estará disponível em: `http://127.0.0.1:8000`
 
-## 🎯 Como Usar
+## Como Usar
 
 ### 1. Registro/Login
 - Acesse a aplicação e crie uma conta ou faça login
@@ -119,7 +134,7 @@ O projeto estará disponível em: `http://127.0.0.1:8000`
 - Ajuste o tamanho da senha (8-32 caracteres)
 - A senha gerada inclui letras, números e símbolos especiais
 
-## 🔒 Segurança
+## Segurança
 
 - **Criptografia:** Todas as senhas são criptografadas antes de serem salvas
 - **Autenticação:** Sistema completo com proteção de rotas
@@ -127,9 +142,8 @@ O projeto estará disponível em: `http://127.0.0.1:8000`
 - **Validação:** Validação rigorosa de todos os inputs
 - **Hash de Senhas:** Senhas de usuário com hash bcrypt
 
-## 📁 Estrutura do Projeto
+## Estrutura do Projeto
 
-```
 PasswordManager/
 ├── app/
 │   ├── Http/Controllers/
@@ -144,10 +158,10 @@ PasswordManager/
 │       ├── credenciais/                # Views das credenciais
 │       └── layouts/                    # Layouts da aplicação
 └── routes/
-    └── web.php                         # Rotas da aplicação
-```
+└── web.php                         # Rotas da aplicação
 
-## 🧪 Testando a Aplicação
+
+## Testando a Aplicação
 
 ### Funcionalidades para Testar:
 
@@ -172,7 +186,7 @@ PasswordManager/
    - Verificar criptografia das senhas no banco
    - Testar proteção CSRF
 
-## 🚨 Solução de Problemas
+## Solução de Problemas
 
 ### Erro "could not find driver"
 ```bash
@@ -199,7 +213,7 @@ sudo chmod -R 775 storage bootstrap/cache
 # No Windows, execute como administrador
 ```
 
-## ⚠️ Importante para Execução
+## Importante para Execução Local
 
 **Para que a aplicação funcione completamente, é necessário:**
 
@@ -208,7 +222,7 @@ sudo chmod -R 775 storage bootstrap/cache
    php artisan serve
    ```
 
-2. **Manter o Vite rodando (para assets):**
+2. **Manter o Vite rodando (para desenvolvimento):**
    ```bash
    npm run dev
    ```
@@ -220,8 +234,6 @@ sudo chmod -R 775 storage bootstrap/cache
 
 **Sem o Vite rodando ou assets compilados, o CSS e JavaScript não funcionarão corretamente.**
 
-## 📝 Notas para Recrutadores
+## Acesso para Demonstração
 
-### 🎯 Acesso Rápido
-**[👉 Clique aqui para testar a aplicação](https://passwordmanager-production.up.railway.app)**
-
+**[Teste a aplicação online](https://passwordmanager-t0lw.onrender.com)**
