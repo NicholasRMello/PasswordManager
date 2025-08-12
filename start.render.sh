@@ -25,12 +25,14 @@ fi
 echo "📊 Executando migrações..."
 php artisan migrate --force
 
-# Build dos assets para produção (FORÇANDO INSTALAÇÃO COMPLETA)
+# Build dos assets para produção (SOLUÇÃO DEFINITIVA)
 echo "🎨 Compilando assets para produção..."
-echo "📦 Instalando TODAS as dependências (incluindo devDependencies)..."
-npm install --include=dev  # Força instalação de devDependencies
+echo "📦 Instalando dependências..."
+npm install
+echo "🔧 Verificando Vite..."
+npx vite --version
 echo "🔧 Executando build do Vite..."
-npm run build  # Volta para npm run build normal
+npx vite build
 
 # Verificar se o manifest foi gerado
 if [ ! -f "public/build/manifest.json" ]; then
