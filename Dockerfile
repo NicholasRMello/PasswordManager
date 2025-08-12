@@ -16,7 +16,8 @@ RUN apk add --no-cache \
     freetype-dev \
     libjpeg-turbo-dev \
     libwebp-dev \
-    libxpm-dev
+    libxpm-dev \
+    bash
 
 # Configurar extensão GD
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp --with-xpm
@@ -64,4 +65,4 @@ RUN chmod +x /var/www/start.render.sh
 EXPOSE 8000
 
 # Comando de inicialização para Render
-CMD ["/var/www/start.render.sh"]
+CMD ["bash", "/var/www/start.render.sh"]
