@@ -99,7 +99,26 @@ RUN_MIGRATIONS=true
    LOG_CHANNEL=errorlog
    APP_ENV=production
    APP_DEBUG=false
+   PORT=fornecida automaticamente pelo Railway
    ```
+
+### Correção do Healthcheck
+
+**Problema: "Service Unavailable" no Healthcheck**
+
+**Causa**: O Railway não consegue conectar na porta correta para fazer o healthcheck.
+
+**Soluções aplicadas**:
+1. **Simplificação do docker-start.sh**: Removido o teste complexo de conexão MySQL que usava `mysqladmin`
+2. **Uso das variáveis corretas**: O Railway fornece automaticamente as variáveis de banco (`DB_HOST`, `DB_PORT`, etc.)
+3. **Timeout aumentado**: Healthcheck timeout aumentado para 300 segundos no `railway.json`
+4. **Aguardo simples**: Substituído o loop de teste MySQL por um `sleep 10` simples
+
+**Verificação**:
+Após o deploy, verifique:
+- Logs mostram "🌐 Iniciando servidor na porta $PORT..."
+- Healthcheck passa sem "service unavailable"
+- Aplicação responde na URL do Railway
 
 **Outros erros 500:**
 - Verificar se todas as variáveis de ambiente estão definidas
