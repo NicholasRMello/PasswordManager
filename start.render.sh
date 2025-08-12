@@ -29,6 +29,13 @@ php artisan migrate --force
 echo "🎨 Compilando assets para produção..."
 npm run build
 
+# OTIMIZAÇÕES CRÍTICAS PARA PRODUÇÃO (RESOLVE O ERRO)
+echo "⚡ Aplicando otimizações para produção..."
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+php artisan optimize
+
 # Verificar aplicação
 echo "🔧 Verificando aplicação..."
 php artisan --version
