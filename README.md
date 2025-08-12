@@ -4,9 +4,24 @@ Sistema web seguro para gerenciamento de credenciais desenvolvido em Laravel com
 
 ## Demonstração Online
 
+  Acesso teste:
+  - Login: teste@teste.com.br
+  - Senha: 12345678
+    obs: Pode criar qualquer acesso fictício :)
 **[Acesse a aplicação em produção](https://passwordmanager-t0lw.onrender.com)**
 
-*Aplicação hospedada no Render para demonstração*
+*Aplicação hospedada no Render para demonstração* (Leve instabilidade)
+
+## 📱 Screenshots
+
+### Tela de Login
+![Login](./screenshots/login.png)
+
+### Dashboard Principal
+![Dashboard](./screenshots/dashboard.png)
+
+### Criar Nova Credencial
+![Nova Credencial](./screenshots/nova-credencial.png)
 
 ## Funcionalidades
 
@@ -128,3 +143,97 @@ O projeto estará disponível em: `http://127.0.0.1:8000`
 - **Hash de Senhas:** Senhas de usuário com hash bcrypt
 
 ## Estrutura do Projeto
+
+PasswordManager/
+├── app/
+│   ├── Http/Controllers/
+│   │   └── CredencialController.php    # Controlador principal
+│   └── Models/
+│       └── Credencial.php              # Model das credenciais
+├── database/
+│   └── migrations/
+│       └── create_credenciais_table.php # Estrutura do banco
+├── resources/
+│   └── views/
+│       ├── credenciais/                # Views das credenciais
+│       └── layouts/                    # Layouts da aplicação
+└── routes/
+└── web.php                         # Rotas da aplicação
+
+
+## Testando a Aplicação
+
+### Funcionalidades para Testar:
+
+1. **Autenticação**
+   - Registro de novo usuário
+   - Login/Logout
+   - Proteção de rotas
+
+2. **CRUD de Credenciais**
+   - Criar nova credencial
+   - Listar credenciais
+   - Editar credencial existente
+   - Excluir credencial
+
+3. **Gerador de Senhas**
+   - Gerar senha com diferentes tamanhos
+   - Verificar complexidade da senha gerada
+   - Aplicar senha gerada no formulário
+
+4. **Segurança**
+   - Tentar acessar rotas protegidas sem login
+   - Verificar criptografia das senhas no banco
+   - Testar proteção CSRF
+
+## Solução de Problemas
+
+### Erro "could not find driver"
+```bash
+# Limpe o cache
+php artisan config:clear
+php artisan cache:clear
+
+# Verifique se as extensões MySQL estão habilitadas no PHP
+```
+
+### Assets não carregam
+```bash
+# Compile os assets novamente
+npm run dev
+# ou
+npm run build
+```
+
+### Problemas de permissão
+```bash
+# No Linux/Mac
+sudo chmod -R 775 storage bootstrap/cache
+
+# No Windows, execute como administrador
+```
+
+## Importante para Execução Local
+
+**Para que a aplicação funcione completamente, é necessário:**
+
+1. **Manter o servidor Laravel rodando:**
+   ```bash
+   php artisan serve
+   ```
+
+2. **Manter o Vite rodando (para desenvolvimento):**
+   ```bash
+   npm run dev
+   ```
+
+3. **Ou compilar os assets para produção:**
+   ```bash
+   npm run build
+   ```
+
+**Sem o Vite rodando ou assets compilados, o CSS e JavaScript não funcionarão corretamente.**
+
+## Acesso para Demonstração
+
+**[Teste a aplicação online](https://passwordmanager-t0lw.onrender.com)**
