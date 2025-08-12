@@ -67,10 +67,12 @@ RUN_MIGRATIONS=true
 
 ### 4. Troubleshooting
 
-**Erro 500 (CRÍTICO - RESOLVIDO):**
+**Erro 500 (CRÍTICO - MÚLTIPLAS CORREÇÕES):**
 - ✅ **APP_KEY atualizada:** A chave da aplicação foi gerada e configurada
-- ✅ **Configurações de produção:** APP_DEBUG=false definido
-- ⚠️ **Próximo passo:** Fazer deploy com as novas configurações
+- ✅ **LOG_CHANNEL corrigido:** Alterado de 'stderr' para 'errorlog' (específico Railway)
+- ✅ **Permissões de storage:** Configuradas no docker-start.sh
+- ✅ **Debug habilitado:** Logs detalhados para identificar problemas
+- ⚠️ **Próximo passo:** Deploy e verificação dos logs no Railway
 
 **Assets não carregam:**
 - Verificar se `APP_URL` e `ASSET_URL` estão corretos
@@ -80,6 +82,24 @@ RUN_MIGRATIONS=true
 **Erro de banco de dados:**
 - Verificar variáveis de ambiente do MySQL
 - Confirmar se o serviço MySQL está ativo no Railway
+
+**Debug Avançado no Railway:**
+1. **Verificar logs de deploy:**
+   - Acesse o painel do Railway
+   - Vá em "Deployments" > "View Logs"
+   - Procure por erros durante o build ou inicialização
+
+2. **Verificar logs de runtime:**
+   - Use `railway logs` no terminal
+   - Ou acesse "Observability" > "Logs" no painel
+
+3. **Variáveis de ambiente críticas:**
+   ```
+   APP_KEY=base64:+dtmA4HSsPJ1wsBGGVprNogYqyGw8qX+bavBtjzOgWA=
+   LOG_CHANNEL=errorlog
+   APP_ENV=production
+   APP_DEBUG=false
+   ```
 
 **Outros erros 500:**
 - Verificar se todas as variáveis de ambiente estão definidas
