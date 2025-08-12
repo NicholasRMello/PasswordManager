@@ -1,21 +1,9 @@
 #!/bin/bash
 # Script de inicialização para Render
 
-# Forçar variáveis de ambiente do Render
-export DATABASE_URL="$DATABASE_URL"
-export POSTGRES_DB="$POSTGRES_DB"
-export POSTGRES_USER="$POSTGRES_USER"
-export POSTGRES_PASSWORD="$POSTGRES_PASSWORD"
-export POSTGRES_HOST="$POSTGRES_HOST"
-export POSTGRES_PORT="$POSTGRES_PORT"
-
-# Aguardar PostgreSQL
-echo "⏳ Aguardando PostgreSQL..."
-while ! pg_isready -h "$POSTGRES_HOST" -p "$POSTGRES_PORT" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -q; do
-    echo "PostgreSQL não está pronto ainda..."
-    sleep 2
-done
-echo "✅ PostgreSQL está pronto!"
+# Aguardar um pouco para o banco estar disponível
+echo "⏳ Aguardando serviços..."
+sleep 10
 
 # Limpar caches
 echo "🧹 Limpando caches..."
@@ -79,9 +67,17 @@ php artisan route:cache
 php artisan view:cache
 php artisan optimize
 
-# Executar migrações
+# Executar migrações (com retry em caso de falha temporária)
 echo "🗄️ Executando migrações..."
-php artisan migrate --force
+for i in {1..3}; do
+    if php artisan migrate --force; then
+        echo "✅ Migrações executadas com sucesso!"
+        break
+    else
+        echo "⚠️ Tentativa $i falhou, tentando novamente em 5s..."
+        sleep 5
+    fi
+done
 
 # Verificar aplicação
 echo "🔧 Verificando aplicação..."
