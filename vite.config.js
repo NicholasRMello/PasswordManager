@@ -27,6 +27,9 @@ export default defineConfig({
             host: 'localhost',
         },
     },
-    // Configuração específica para produção
-    base: process.env.NODE_ENV === 'production' ? '/build/' : '/',
+    // Remover a configuração base problemática
+    // base: process.env.NODE_ENV === 'production' ? '/build/' : '/',
+});
+// Configuração específica para produção
+base: process.env.NODE_ENV === 'production' ? '/build/' : '/',
 });

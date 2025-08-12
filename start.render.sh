@@ -1,58 +1,37 @@
 #!/bin/bash
-
 # Script de inicialização para Render
-echo "🚀 Iniciando Password Manager no Render..."
 
-# FORÇAR VARIÁVEIS DO RENDER (ignorar .env local)
-echo "🔧 Configurando variáveis do Render..."
-export DB_CONNECTION=pgsql
-export DB_PORT=5432
-export APP_ENV=production
-export APP_DEBUG=false
-export LOG_CHANNEL=errorlog
-export CACHE_DRIVER=file
-export SESSION_DRIVER=file
-export QUEUE_CONNECTION=sync
+# Forçar variáveis de ambiente do Render
+export DATABASE_URL="$DATABASE_URL"
+export POSTGRES_DB="$POSTGRES_DB"
+export POSTGRES_USER="$POSTGRES_USER"
+export POSTGRES_PASSWORD="$POSTGRES_PASSWORD"
+export POSTGRES_HOST="$POSTGRES_HOST"
+export POSTGRES_PORT="$POSTGRES_PORT"
 
-# Aguardar banco PostgreSQL
+# Aguardar PostgreSQL
 echo "⏳ Aguardando PostgreSQL..."
-sleep 10
+while ! pg_isready -h "$POSTGRES_HOST" -p "$POSTGRES_PORT" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -q; do
+    echo "PostgreSQL não está pronto ainda..."
+    sleep 2
+done
+echo "✅ PostgreSQL está pronto!"
 
-# Verificar variáveis de ambiente essenciais
-echo "🔍 Verificando variáveis de ambiente..."
-echo "DB_CONNECTION: $DB_CONNECTION"
-echo "DB_HOST: $DB_HOST"
-echo "DB_DATABASE: $DB_DATABASE"
-echo "DB_USERNAME: $DB_USERNAME"
-echo "PORT: $PORT"
-
-# LIMPAR TODOS OS CACHES ANTES DE COMEÇAR
+# Limpar caches
 echo "🧹 Limpando caches..."
 php artisan config:clear
-php artisan route:clear
-php artisan view:clear
 php artisan cache:clear
+php artisan view:clear
+php artisan route:clear
 
-# Verificar se APP_KEY existe, se não, gerar uma
-if [ -z "$APP_KEY" ]; then
-    echo "🔑 Gerando APP_KEY..."
-    php artisan key:generate --force
-fi
-
-# Executar migrações
-echo "📊 Executando migrações..."
-php artisan migrate --force
-
-# COMPILAR ASSETS COM VITE CORRETAMENTE
-echo "🎨 Compilando assets com Vite..."
+# Instalar dependências
 echo "📦 Instalando dependências..."
-npm install --include=dev
+composer install --no-dev --optimize-autoloader
 
+# Compilar assets
 echo "🏗️ Compilando assets..."
-NODE_ENV=production npm run build
-
-# CORREÇÃO CRÍTICA: Configurar Vite corretamente
-echo "🔧 Configurando Vite para produção..."
+npm ci
+npm run build
 
 # Verificar se o build do Vite foi bem-sucedido
 if [ -f "public/build/.vite/manifest.json" ]; then
@@ -60,55 +39,49 @@ if [ -f "public/build/.vite/manifest.json" ]; then
     echo "📋 Movendo manifest para local correto..."
     cp public/build/.vite/manifest.json public/build/manifest.json
     
-    # CORREÇÃO ADICIONAL: Garantir que o Laravel encontre os assets
-    echo "🎯 Configurando caminhos dos assets..."
-    
-    # Criar links simbólicos para garantir que os assets sejam encontrados
-    ln -sf /opt/render/project/src/public/build/assets /opt/render/project/src/public/assets 2>/dev/null || true
-    
-    # Verificar se os arquivos CSS e JS existem
-    echo "📁 Verificando arquivos compilados..."
-    ls -la public/build/assets/
-    
     echo "📄 Conteúdo do manifest:"
     cat public/build/manifest.json
+    
+    echo "📁 Verificando arquivos compilados..."
+    ls -la public/build/assets/
 else
-    echo "❌ ERRO: Build do Vite falhou!"
-    exit 1
+    echo "❌ Falha no build do Vite! Usando fallback manual..."
+    
+    # Fallback manual
+    mkdir -p public/build/assets
+    
+    # Criar manifest.json manual
+    cat > public/build/manifest.json << 'EOF'
+{
+  "resources/css/app.css": {
+    "file": "assets/app.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  }
+}
+EOF
+    
+    # Copiar assets básicos
+    cp resources/css/app.css public/build/assets/app.css 2>/dev/null || echo "CSS não encontrado"
+    cp resources/js/app.js public/build/assets/app.js 2>/dev/null || echo "JS não encontrado"
 fi
 
-# CONFIGURAÇÃO ESPECIAL PARA PRODUÇÃO
+# Configurar Laravel para produção
 echo "⚙️ Configurando Laravel para produção..."
-
-# Forçar configuração do Vite
-cat > config/vite.php << 'EOF'
-<?php
-
-return [
-    'build_directory' => 'build',
-    'manifest' => 'manifest.json',
-    'hot_file' => public_path('hot'),
-    'commands' => [
-        'serve' => [
-            'npm',
-            'run',
-            'dev',
-        ],
-        'build' => [
-            'npm',
-            'run',
-            'build',
-        ],
-    ],
-];
-EOF
-
-# Otimizações para produção
-echo "⚡ Aplicando otimizações para produção..."
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 php artisan optimize
+
+# Executar migrações
+echo "🗄️ Executando migrações..."
+php artisan migrate --force
 
 # Verificar aplicação
 echo "🔧 Verificando aplicação..."
@@ -118,20 +91,20 @@ php artisan --version
 echo "🗄️ Testando conexão com banco..."
 php artisan migrate:status
 
-# TESTE FINAL: Verificar se os assets estão acessíveis
+# Verificar se os assets estão acessíveis
 echo "🧪 Testando acesso aos assets..."
-if [ -f "public/build/assets/app-*.css" ]; then
+if [ -f "public/build/assets/app-"*.css ]; then
     echo "✅ CSS encontrado!"
 else
     echo "❌ CSS não encontrado!"
 fi
 
-if [ -f "public/build/assets/app-*.js" ]; then
+if [ -f "public/build/assets/app-"*.js ]; then
     echo "✅ JS encontrado!"
 else
     echo "❌ JS não encontrado!"
 fi
 
-# Iniciar servidor Laravel na porta correta
-echo "🌐 Iniciando servidor na porta $PORT..."
-php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
+# Iniciar servidor
+echo "🌐 Iniciando servidor na porta 10000..."
+php artisan serve --host=0.0.0.0 --port=10000
