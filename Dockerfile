@@ -11,6 +11,7 @@ RUN apk add --no-cache \
     nodejs \
     npm \
     postgresql-client \
+    postgresql-dev \
     oniguruma-dev \
     freetype-dev \
     libjpeg-turbo-dev \
