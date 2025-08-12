@@ -25,9 +25,9 @@ fi
 echo "📊 Executando migrações..."
 php artisan migrate --force
 
-# Build dos assets para produção (COM VERIFICAÇÃO)
+# Build dos assets para produção (INSTALANDO TODAS AS DEPENDÊNCIAS)
 echo "🎨 Compilando assets para produção..."
-npm ci --only=production
+npm ci  # Remove --only=production para instalar devDependencies
 npm run build
 
 # Verificar se o manifest foi gerado
@@ -35,6 +35,9 @@ if [ ! -f "public/build/manifest.json" ]; then
     echo "❌ ERRO: Manifest do Vite não foi gerado!"
     echo "📁 Listando conteúdo de public/build:"
     ls -la public/build/ || echo "Pasta public/build não existe"
+    echo "🔍 Verificando se Vite está disponível:"
+    which vite || echo "Vite não encontrado no PATH"
+    npx vite --version || echo "Vite não disponível via npx"
     exit 1
 fi
 
