@@ -1,24 +1,24 @@
 # Password Manager - Gerenciador de Senhas
 
-Um sistema web seguro para gerenciamento de credenciais desenvolvido em Laravel com autenticação, criptografia e gerador de senhas.
+Sistema web seguro para gerenciamento de credenciais desenvolvido em Laravel com autenticação, criptografia e gerador de senhas.
 
-## 🌐 Demonstração Online
+## Demonstração Online
 
-**🚀 [Acesse a aplicação em produção](https://passwordmanager-production.up.railway.app)**
+**[Acesse a aplicação em produção](https://passwordmanager-t0lw.onrender.com)**
 
-*Aplicação hospedada no Railway para demonstração aos recrutadores*
+*Aplicação hospedada no Render para demonstração*
 
-## 🚀 Funcionalidades
+## Funcionalidades
 
-- ✅ Sistema de autenticação completo (login/registro)
-- ✅ Gerenciamento seguro de credenciais
-- ✅ Gerador de senhas seguras com configurações personalizáveis
-- ✅ Criptografia de senhas no banco de dados
-- ✅ Interface moderna e responsiva com Tailwind CSS
-- ✅ Validação de formulários
-- ✅ Proteção CSRF
+- Sistema de autenticação completo (login/registro)
+- Gerenciamento seguro de credenciais
+- Gerador de senhas seguras com configurações personalizáveis
+- Criptografia de senhas no banco de dados
+- Interface moderna e responsiva com Tailwind CSS
+- Validação de formulários
+- Proteção CSRF
 
-## 🛠️ Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 - **Backend:** Laravel 10.x
 - **Frontend:** Blade Templates, Tailwind CSS, Vite
@@ -26,18 +26,18 @@ Um sistema web seguro para gerenciamento de credenciais desenvolvido em Laravel 
 - **Autenticação:** Laravel Breeze
 - **Criptografia:** Laravel Encryption
 
-## 📋 Pré-requisitos
+## Pré-requisitos
 
 Antes de executar o projeto, certifique-se de ter instalado:
 
 - PHP >= 8.1
 - Composer
 - Node.js >= 16.x
-- NPM ou Yarn
+- NPM
 - MySQL >= 5.7
 - Git
 
-## 🔧 Instalação e Configuração
+## Instalação e Configuração
 
 ### 1. Clone o repositório
 ```bash
@@ -102,7 +102,7 @@ php artisan serve
 
 O projeto estará disponível em: `http://127.0.0.1:8000`
 
-## 🎯 Como Usar
+## Como Usar
 
 ### 1. Registro/Login
 - Acesse a aplicação e crie uma conta ou faça login
@@ -119,7 +119,7 @@ O projeto estará disponível em: `http://127.0.0.1:8000`
 - Ajuste o tamanho da senha (8-32 caracteres)
 - A senha gerada inclui letras, números e símbolos especiais
 
-## 🔒 Segurança
+## Segurança
 
 - **Criptografia:** Todas as senhas são criptografadas antes de serem salvas
 - **Autenticação:** Sistema completo com proteção de rotas
@@ -127,101 +127,4 @@ O projeto estará disponível em: `http://127.0.0.1:8000`
 - **Validação:** Validação rigorosa de todos os inputs
 - **Hash de Senhas:** Senhas de usuário com hash bcrypt
 
-## 📁 Estrutura do Projeto
-
-```
-PasswordManager/
-├── app/
-│   ├── Http/Controllers/
-│   │   └── CredencialController.php    # Controlador principal
-│   └── Models/
-│       └── Credencial.php              # Model das credenciais
-├── database/
-│   └── migrations/
-│       └── create_credenciais_table.php # Estrutura do banco
-├── resources/
-│   └── views/
-│       ├── credenciais/                # Views das credenciais
-│       └── layouts/                    # Layouts da aplicação
-└── routes/
-    └── web.php                         # Rotas da aplicação
-```
-
-## 🧪 Testando a Aplicação
-
-### Funcionalidades para Testar:
-
-1. **Autenticação**
-   - Registro de novo usuário
-   - Login/Logout
-   - Proteção de rotas
-
-2. **CRUD de Credenciais**
-   - Criar nova credencial
-   - Listar credenciais
-   - Editar credencial existente
-   - Excluir credencial
-
-3. **Gerador de Senhas**
-   - Gerar senha com diferentes tamanhos
-   - Verificar complexidade da senha gerada
-   - Aplicar senha gerada no formulário
-
-4. **Segurança**
-   - Tentar acessar rotas protegidas sem login
-   - Verificar criptografia das senhas no banco
-   - Testar proteção CSRF
-
-## 🚨 Solução de Problemas
-
-### Erro "could not find driver"
-```bash
-# Limpe o cache
-php artisan config:clear
-php artisan cache:clear
-
-# Verifique se as extensões MySQL estão habilitadas no PHP
-```
-
-### Assets não carregam
-```bash
-# Compile os assets novamente
-npm run dev
-# ou
-npm run build
-```
-
-### Problemas de permissão
-```bash
-# No Linux/Mac
-sudo chmod -R 775 storage bootstrap/cache
-
-# No Windows, execute como administrador
-```
-
-## ⚠️ Importante para Execução
-
-**Para que a aplicação funcione completamente, é necessário:**
-
-1. **Manter o servidor Laravel rodando:**
-   ```bash
-   php artisan serve
-   ```
-
-2. **Manter o Vite rodando (para assets):**
-   ```bash
-   npm run dev
-   ```
-
-3. **Ou compilar os assets para produção:**
-   ```bash
-   npm run build
-   ```
-
-**Sem o Vite rodando ou assets compilados, o CSS e JavaScript não funcionarão corretamente.**
-
-## 📝 Notas para Recrutadores
-
-### 🎯 Acesso Rápido
-**[👉 Clique aqui para testar a aplicação](https://passwordmanager-production.up.railway.app)**
-
+## Estrutura do Projeto
