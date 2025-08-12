@@ -24,7 +24,6 @@ RUN docker-php-ext-install pdo pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-
 # ===== Stage de build =====
 FROM base AS build
 
@@ -38,7 +37,6 @@ ENV NODE_ENV=production
 RUN npm run build
 RUN ls -la public/build || (echo "❌ Build não encontrado" && exit 1)
 
-
 # ===== Stage final (runtime) =====
 FROM base AS runtime
 
@@ -51,6 +49,8 @@ RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/bootstrap/cache \
     && chmod -R 755 /var/www/public
 
+EXPOSE 8000
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
 RUN chmod +x /var/www/start.render.sh
 
 EXPOSE 8000
