@@ -43,14 +43,28 @@ fi
 echo "📊 Executando migrações..."
 php artisan migrate --force
 
-# SOLUÇÃO RADICAL: BYPASS COMPLETO DO VITE
-echo "🎨 Preparando assets SEM Vite..."
-echo "📁 Criando estrutura de build..."
-mkdir -p public/build/assets
+# COMPILAR ASSETS COM VITE CORRETAMENTE
+echo "🎨 Compilando assets com Vite..."
+echo "📦 Instalando dependências..."
+npm install --include=dev
 
-# Criar manifest.json manualmente
-echo "📝 Criando manifest.json manualmente..."
-cat > public/build/manifest.json << 'EOF'
+echo "🏗️ Compilando assets..."
+NODE_ENV=production npm run build
+
+# Verificar se o build do Vite foi bem-sucedido
+if [ -f "public/build/.vite/manifest.json" ]; then
+    echo "✅ Build do Vite bem-sucedido!"
+    echo "📋 Movendo manifest para local correto..."
+    cp public/build/.vite/manifest.json public/build/manifest.json
+    echo "📄 Conteúdo do manifest:"
+    cat public/build/manifest.json
+else
+    echo "❌ ERRO: Build do Vite falhou!"
+    echo "📁 Criando fallback manual..."
+    mkdir -p public/build/assets
+    
+    # Criar manifest.json manualmente como fallback
+    cat > public/build/manifest.json << 'EOF'
 {
   "resources/css/app.css": {
     "file": "assets/app.css",
@@ -64,20 +78,10 @@ cat > public/build/manifest.json << 'EOF'
   }
 }
 EOF
-
-# Copiar assets básicos
-echo "📋 Copiando assets..."
-cp resources/css/app.css public/build/assets/app.css 2>/dev/null || echo "/* CSS básico */" > public/build/assets/app.css
-cp resources/js/app.js public/build/assets/app.js 2>/dev/null || echo "// JS básico" > public/build/assets/app.js
-
-# Verificar se o manifest foi criado
-if [ -f "public/build/manifest.json" ]; then
-    echo "✅ Manifest criado com sucesso!"
-    echo "📄 Conteúdo do manifest:"
-    cat public/build/manifest.json
-else
-    echo "❌ ERRO: Falha ao criar manifest!"
-    exit 1
+    
+    # Copiar assets básicos
+    cp resources/css/app.css public/build/assets/app.css 2>/dev/null || echo "/* CSS básico */" > public/build/assets/app.css
+    cp resources/js/app.js public/build/assets/app.js 2>/dev/null || echo "// JS básico" > public/build/assets/app.js
 fi
 
 # Otimizações para produção
