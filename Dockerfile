@@ -40,8 +40,22 @@ RUN npm install
 ENV NODE_ENV=production
 RUN npm run build
 
-# Verificar se manifest foi criado
-RUN test -f public/build/manifest.json && echo "✅ Manifest OK" || (echo "❌ Manifest não encontrado" && exit 1)
+# Debug: verificar estrutura criada
+RUN echo "=== Verificando estrutura do build ===" \
+    && ls -la public/build/ \
+    && echo "=== Conteúdo da pasta .vite ===" \
+    && ls -la public/build/.vite/ || echo "Pasta .vite não existe" \
+    && echo "=== Procurando por manifest.json ===" \
+    && find public/build/ -name "manifest.json" -type f || echo "Nenhum manifest.json encontrado"
+
+# Se o manifest estiver em .vite/, mover para o local correto
+RUN if [ -f "public/build/.vite/manifest.json" ]; then \
+        echo "Movendo manifest para local correto"; \
+        cp public/build/.vite/manifest.json public/build/manifest.json; \
+    fi
+
+# Verificar se manifest está no local correto agora
+RUN test -f public/build/manifest.json && echo "✅ Manifest OK" || (echo "❌ Manifest ainda não encontrado" && exit 1)
 
 # Permissões
 RUN chown -R www-data:www-data /var/www \
