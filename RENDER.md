@@ -87,13 +87,32 @@ git push
    ```
 
 ### 6. Configurar Variáveis Adicionais
+
+**⚠️ IMPORTANTE - Configurar variáveis de ambiente:**
+
+**OBRIGATÓRIO:** Configure estas variáveis no painel do Render (Environment Variables):
 ```
 APP_NAME=Password Manager
 APP_ENV=production
 APP_DEBUG=false
 APP_KEY=[será gerado automaticamente]
+APP_URL=https://seu-app.onrender.com
+
+# Configurações do PostgreSQL (use os dados do seu banco criado)
+DB_CONNECTION=pgsql
+DB_HOST=dpg-xxxxxxxxx-a.oregon-postgres.render.com
+DB_PORT=5432
+DB_DATABASE=passwordmanager
+DB_USERNAME=passwordmanager_user
+DB_PASSWORD=sua_senha_do_banco
+
+# Configurações adicionais
 LOG_CHANNEL=errorlog
+SESSION_DRIVER=file
+CACHE_DRIVER=file
 ```
+
+**❌ ERRO COMUM:** Não deixe as variáveis de banco vazias! O erro 500 geralmente acontece quando as variáveis DB_HOST, DB_DATABASE, DB_USERNAME ou DB_PASSWORD estão vazias.
 
 ## 🔧 Configurações Automáticas
 
@@ -108,6 +127,28 @@ Compilados automaticamente no build.
 
 ### Healthcheck
 Endpoint `/health` já configurado.
+
+## 🚨 Troubleshooting - Erro 500
+
+Se você está vendo "Server Error 500":
+
+### 1. Verificar Variáveis de Ambiente
+- ✅ Todas as variáveis DB_* estão configuradas?
+- ✅ DB_HOST aponta para seu PostgreSQL do Render?
+- ✅ DB_DATABASE, DB_USERNAME, DB_PASSWORD estão corretos?
+
+### 2. Verificar Logs do Render
+- Acesse: Dashboard → Seu Service → Logs
+- Procure por erros de conexão com banco
+- Verifique se as migrações executaram
+
+### 3. Verificar PostgreSQL
+- O banco de dados está rodando?
+- As credenciais estão corretas?
+- O banco foi criado com o nome correto?
+
+### 4. Comandos de Debug
+O script agora mostra as variáveis de ambiente nos logs para facilitar o debug.
 
 ## 💰 Custos - 100% GRATUITO!
 

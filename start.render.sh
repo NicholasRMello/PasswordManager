@@ -7,6 +7,14 @@ echo "🚀 Iniciando Password Manager no Render..."
 echo "⏳ Aguardando PostgreSQL..."
 sleep 10
 
+# Verificar variáveis de ambiente essenciais
+echo "🔍 Verificando variáveis de ambiente..."
+echo "DB_CONNECTION: $DB_CONNECTION"
+echo "DB_HOST: $DB_HOST"
+echo "DB_DATABASE: $DB_DATABASE"
+echo "DB_USERNAME: $DB_USERNAME"
+echo "PORT: $PORT"
+
 # Verificar se APP_KEY existe, se não, gerar uma
 if [ -z "$APP_KEY" ]; then
     echo "🔑 Gerando APP_KEY..."
