@@ -51,38 +51,57 @@ npm install --include=dev
 echo "🏗️ Compilando assets..."
 NODE_ENV=production npm run build
 
+# CORREÇÃO CRÍTICA: Configurar Vite corretamente
+echo "🔧 Configurando Vite para produção..."
+
 # Verificar se o build do Vite foi bem-sucedido
 if [ -f "public/build/.vite/manifest.json" ]; then
     echo "✅ Build do Vite bem-sucedido!"
     echo "📋 Movendo manifest para local correto..."
     cp public/build/.vite/manifest.json public/build/manifest.json
+    
+    # CORREÇÃO ADICIONAL: Garantir que o Laravel encontre os assets
+    echo "🎯 Configurando caminhos dos assets..."
+    
+    # Criar links simbólicos para garantir que os assets sejam encontrados
+    ln -sf /opt/render/project/src/public/build/assets /opt/render/project/src/public/assets 2>/dev/null || true
+    
+    # Verificar se os arquivos CSS e JS existem
+    echo "📁 Verificando arquivos compilados..."
+    ls -la public/build/assets/
+    
     echo "📄 Conteúdo do manifest:"
     cat public/build/manifest.json
 else
     echo "❌ ERRO: Build do Vite falhou!"
-    echo "📁 Criando fallback manual..."
-    mkdir -p public/build/assets
-    
-    # Criar manifest.json manualmente como fallback
-    cat > public/build/manifest.json << 'EOF'
-{
-  "resources/css/app.css": {
-    "file": "assets/app.css",
-    "isEntry": true,
-    "src": "resources/css/app.css"
-  },
-  "resources/js/app.js": {
-    "file": "assets/app.js",
-    "isEntry": true,
-    "src": "resources/js/app.js"
-  }
-}
-EOF
-    
-    # Copiar assets básicos
-    cp resources/css/app.css public/build/assets/app.css 2>/dev/null || echo "/* CSS básico */" > public/build/assets/app.css
-    cp resources/js/app.js public/build/assets/app.js 2>/dev/null || echo "// JS básico" > public/build/assets/app.js
+    exit 1
 fi
+
+# CONFIGURAÇÃO ESPECIAL PARA PRODUÇÃO
+echo "⚙️ Configurando Laravel para produção..."
+
+# Forçar configuração do Vite
+cat > config/vite.php << 'EOF'
+<?php
+
+return [
+    'build_directory' => 'build',
+    'manifest' => 'manifest.json',
+    'hot_file' => public_path('hot'),
+    'commands' => [
+        'serve' => [
+            'npm',
+            'run',
+            'dev',
+        ],
+        'build' => [
+            'npm',
+            'run',
+            'build',
+        ],
+    ],
+];
+EOF
 
 # Otimizações para produção
 echo "⚡ Aplicando otimizações para produção..."
@@ -98,6 +117,20 @@ php artisan --version
 # Testar conexão com banco
 echo "🗄️ Testando conexão com banco..."
 php artisan migrate:status
+
+# TESTE FINAL: Verificar se os assets estão acessíveis
+echo "🧪 Testando acesso aos assets..."
+if [ -f "public/build/assets/app-*.css" ]; then
+    echo "✅ CSS encontrado!"
+else
+    echo "❌ CSS não encontrado!"
+fi
+
+if [ -f "public/build/assets/app-*.js" ]; then
+    echo "✅ JS encontrado!"
+else
+    echo "❌ JS não encontrado!"
+fi
 
 # Iniciar servidor Laravel na porta correta
 echo "🌐 Iniciando servidor na porta $PORT..."
