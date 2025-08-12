@@ -41,8 +41,8 @@ services:
         value: 120
 
 databases:
-  - name: password-manager-db
-    databaseName: password_manager
-    user: password_manager_user
+  - name: PasswordManager-db
+    databaseName: PasswordManager
+    user: passwordmanager_user
     plan: free
     region: virginia

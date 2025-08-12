@@ -68,9 +68,9 @@ git push
 ### 4. Criar Banco PostgreSQL
 1. Clique **"New +"** → **"PostgreSQL"**
 2. Configure:
-   - **Name**: `password-manager-db`
-   - **Database**: `password_manager`
-   - **User**: `password_manager_user`
+   - **Name**: `PasswordManager-db`
+   - **Database**: `PasswordManager`
+   - **User**: `passwordmanager_user`
    - **Plan**: **Free** 🎉
 
 ### 5. Conectar Banco ao Web Service
@@ -81,8 +81,8 @@ git push
    DB_CONNECTION=pgsql
    DB_HOST=[Internal Database URL do seu banco]
    DB_PORT=5432
-   DB_DATABASE=password_manager
-   DB_USERNAME=password_manager_user
+   DB_DATABASE=PasswordManager
+   DB_USERNAME=passwordmanager_user
    DB_PASSWORD=[Senha gerada automaticamente]
    ```
 
