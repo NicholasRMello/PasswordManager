@@ -1,6 +1,6 @@
-FROM php:8.2-cli-alpine
+# ===== Stage base =====
+FROM php:8.2-cli-alpine AS base
 
-# Instalar dependências do sistema
 RUN apk add --no-cache \
     git \
     curl \
@@ -19,50 +19,39 @@ RUN apk add --no-cache \
     libxpm-dev \
     bash
 
-# Configurar extensão GD
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp --with-xpm
-
-# Instalar extensões PHP
 RUN docker-php-ext-install pdo pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd
 
-# Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Definir diretório de trabalho
+
+# ===== Stage de build =====
+FROM base AS build
+
 WORKDIR /var/www
 
-# Copiar arquivos do projeto
-COPY . /var/www
+COPY . .
 
-# Instalar dependências PHP
 RUN composer install --optimize-autoloader --no-dev
-
-# Instalar dependências Node.js
 RUN npm install
-
-# Definir variáveis de ambiente para o build
 ENV NODE_ENV=production
-ENV VITE_APP_NAME="Password Manager"
-
-# Build dos assets para produção
 RUN npm run build
+RUN ls -la public/build || (echo "❌ Build não encontrado" && exit 1)
 
-# Verificar se os assets foram gerados
-RUN ls -la public/build/ || echo "Build directory not found"
 
-# Configurar permissões
-RUN chown -R www-data:www-data /var/www
-RUN chmod -R 755 /var/www/storage
-RUN chmod -R 755 /var/www/bootstrap/cache
-RUN chmod -R 755 /var/www/public
-RUN mkdir -p /var/www/public/build && chmod -R 755 /var/www/public/build
+# ===== Stage final (runtime) =====
+FROM base AS runtime
 
-# Tornar os scripts de inicialização executáveis
-RUN chmod +x /var/www/docker-start.sh
+WORKDIR /var/www
+
+COPY --from=build /var/www /var/www
+
+RUN chown -R www-data:www-data /var/www \
+    && chmod -R 755 /var/www/storage \
+    && chmod -R 755 /var/www/bootstrap/cache \
+    && chmod -R 755 /var/www/public
+
 RUN chmod +x /var/www/start.render.sh
 
-# Expor porta
 EXPOSE 8000
-
-# Comando de inicialização para Render
 CMD ["bash", "/var/www/start.render.sh"]
