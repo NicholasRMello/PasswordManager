@@ -213,6 +213,69 @@ sudo chmod -R 775 storage bootstrap/cache
 # No Windows, execute como administrador
 ```
 
+## 🔧 Solução de Problemas - Execução Local
+
+### Problema: Assets (CSS/JS) não carregam localmente
+
+Se o aplicativo estiver rodando mas os estilos não aparecerem (página sem formatação), siga estes passos:
+
+#### Solução Rápida (Recomendada):
+```bash
+# 1. Limpe os caches
+php artisan config:clear
+php artisan cache:clear
+php artisan view:clear
+
+# 2. Compile os assets
+npm run build
+
+# 3. Inicie o servidor
+php artisan serve
+```
+
+#### Solução para Desenvolvimento (Hot Reload):
+```bash
+# Terminal 1: Inicie o Vite Dev Server
+npm run dev
+
+# Terminal 2: Inicie o Laravel Server
+php artisan serve
+```
+
+#### Se o problema persistir:
+
+1. **Verifique o arquivo `.env`:**
+   - Para desenvolvimento: `APP_ENV=local`
+   - Para produção local: `APP_ENV=production`
+
+2. **Reinstale as dependências:**
+   ```bash
+   npm cache clean --force
+   rm -rf node_modules package-lock.json
+   npm install
+   ```
+
+3. **Verifique o `vite.config.js` (deve estar simples):**
+   ```javascript
+   import { defineConfig } from 'vite';
+   import laravel from 'laravel-vite-plugin';
+   
+   export default defineConfig({
+       plugins: [
+           laravel({
+               input: ['resources/css/app.css', 'resources/js/app.js'],
+               refresh: true,
+           }),
+       ],
+   });
+   ```
+
+### Notas Importantes:
+- O comando `npm run build` compila os assets para produção
+- O comando `npm run dev` inicia o servidor de desenvolvimento com hot reload
+- Sempre limpe os caches antes de testar soluções
+- A configuração do `vite.config.js` deve permanecer simples para evitar conflitos
+
 ## Importante para Execução Local
 
 **Para que a aplicação funcione completamente, é necessário:**
